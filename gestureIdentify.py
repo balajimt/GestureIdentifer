@@ -144,8 +144,7 @@ def binaryMask(frame, x0, y0, width, height ):
 
 banner =  '''\nWhat would you like to do ?
     1- Use pretrained model for gesture recognition & layer visualization
-    2- Train the model (you will require image samples for training under .\imgfolder)
-    3- Visualize feature maps of different layers of trained model
+    2- Train the model (you will require image samples for training under .\newtest)
     '''
 
 
