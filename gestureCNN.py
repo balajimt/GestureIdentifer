@@ -59,10 +59,11 @@ path1 = "./gestures"    #path of folder of images
 ## Path2 is the folder which is fed in to training model
 path2 = './imgfolder_b'
 
-WeightFileName = ["ori_4015imgs_weights.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
+# WeightFileName = ["ori_4015imgs_weights.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
+WeightFileName = ["newtestweight.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
 
 # outputs
-output = ["OK", "NOTHING","PEACE", "PUNCH", "STOP"]
+output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
 #output = ["PEACE", "STOP", "THUMBSDOWN", "THUMBSUP"]
 
 
