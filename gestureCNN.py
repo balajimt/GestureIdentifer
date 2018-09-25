@@ -221,11 +221,11 @@ def initializers():
     samples_per_class = total_images / nb_classes
     print("samples_per_class - ",samples_per_class)
     s = 0
-    r = samples_per_class
+    r = int(samples_per_class)
     for classIndex in range(nb_classes):
         label[s:r] = classIndex
-        s = r
-        r = s + samples_per_class
+        s = int(r)
+        r = int(s + samples_per_class)
 
     '''
     # eg: For 301 img samples/gesture for 4 gesture types
