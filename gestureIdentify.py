@@ -1,25 +1,23 @@
 import cv2
+import pyautogui
 import numpy as np
 import os
 import time
 import gestureCNN as myNN
-import pyautogui
 
-minValue = 70
-
+# Coordinates of region of Interest
 x0 = 400
 y0 = 200
+
+# Height and width f region of Interest
 height = 200
 width = 200
 
+# Boolean variables to keep track
 saveImg = False
 guessGesture = False
 visualize = False
 lastgesture = -1
-
-kernel = np.ones((15,15),np.uint8)
-kernel2 = np.ones((1,1),np.uint8)
-skinkernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
 
 # Which mask mode to use BinaryMask or SkinMask (True|False)
 binaryMode = True
@@ -50,8 +48,8 @@ def saveROIImg(img):
     counter = counter + 1
     name = gestname + str(counter)
     print(("Saving img:",name))
-    cv2.imwrite(path+name + ".png", img)
-    time.sleep(0.04 )
+    cv2.imwrite(path + name + ".png", img)
+    time.sleep(0.04)
 
 
 def skinMask(frame, x0, y0, width, height ):
@@ -67,7 +65,7 @@ def skinMask(frame, x0, y0, width, height ):
 
     #Apply skin color range
     mask = cv2.inRange(hsv, low_range, upper_range)
-
+    skinkernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
     mask = cv2.erode(mask, skinkernel, iterations = 1)
     mask = cv2.dilate(mask, skinkernel, iterations = 1)
 
@@ -104,6 +102,7 @@ def binaryMask(frame, x0, y0, width, height ):
 
     th3 = cv2.adaptiveThreshold(blur,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY_INV,11,2)
     #Uses Otsu's threshold value to find value
+    minValue = 70
     ret, res = cv2.threshold(th3, minValue, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
     #ret, res = cv2.threshold(blur, minValue, 255, cv2.THRESH_BINARY +cv2.THRESH_OTSU)
 
@@ -113,12 +112,16 @@ def binaryMask(frame, x0, y0, width, height ):
         retgesture = myNN.guessGesture(mod, res)
         if lastgesture != retgesture :
             lastgesture = retgesture
-            if lastgesture == 4:
-                print("Desktop")
-                pyautogui.press('win')
-            if lastgesture == 5:
-                print("Volume increase")
-                pyautogui.press('')
+            # Trainded Gesture Files
+            # output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
+            if lastgesture == 3:
+                print("Hide/View Controls")
+                pyautogui.hotkey('ctrl', 'h')
+                #time.sleep(0.25)
+            elif lastgesture == 4:
+                print("Play/Pause")
+                pyautogui.press('space')
+                #time.sleep(0.25)
     return res
 
 
