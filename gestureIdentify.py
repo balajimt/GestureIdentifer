@@ -3,6 +3,7 @@ import numpy as np
 import os
 import time
 import gestureCNN as myNN
+import pyautogui
 
 minValue = 70
 
@@ -54,7 +55,7 @@ def saveROIImg(img):
 
 
 def skinMask(frame, x0, y0, width, height ):
-    global guessGesture, visualize, mod, lastgesture, saveImg
+    global guessGesture, mod, lastgesture, saveImg
     # HSV values
     low_range = np.array([0, 50, 80])
     upper_range = np.array([30, 200, 255])
@@ -88,19 +89,12 @@ def skinMask(frame, x0, y0, width, height ):
             print(myNN.output[lastgesture])
             time.sleep(0.01 )
             #guessGesture = False
-    elif visualize == True:
-        layer = int(input("Enter which layer to visualize "))
-        cv2.waitKey(0)
-        myNN.visualizeLayers(mod, res, layer)
-        visualize = False
-
-
     return res
 
 
 #%%
 def binaryMask(frame, x0, y0, width, height ):
-    global guessGesture, visualize, mod, lastgesture, saveImg
+    global guessGesture, mod, lastgesture, saveImg
 
     cv2.rectangle(frame, (x0,y0),(x0+width,y0+height),(0,255,0),1)
     roi = frame[y0:y0+height, x0:x0+width]
@@ -119,30 +113,16 @@ def binaryMask(frame, x0, y0, width, height ):
         retgesture = myNN.guessGesture(mod, res)
         if lastgesture != retgesture :
             lastgesture = retgesture
-            #print lastgesture
-
-            ## Checking for only PUNCH gesture here
-            ## Run this app in Prediction Mode and keep Chrome browser on focus with Internet Off
-            ## And have fun :) with Dino
-            if lastgesture == 3:
-                jump = ''' osascript -e 'tell application "System Events" to key code 49' '''
-                #jump = ''' osascript -e 'tell application "System Events" to key down (49)' '''
-                os.system(jump)
-                print(myNN.output[lastgesture] + "= Dino JUMP!")
-
-            #time.sleep(0.01 )
-            #guessGesture = False
-    elif visualize == True:
-        layer = int(input("Enter which layer to visualize "))
-        cv2.waitKey(1)
-        myNN.visualizeLayers(mod, res, layer)
-        visualize = False
-
+            if lastgesture == 4:
+                print("Desktop")
+                pyautogui.press('win')
+            if lastgesture == 5:
+                print("Volume increase")
+                pyautogui.press('')
     return res
 
-#%%
 
-banner =  '''\nWhat would you like to do ?
+banner =  '''\n
     1- Use pretrained model for gesture recognition & layer visualization
     2- Train the model (you will require image samples for training under .\newtest)
     '''
@@ -152,7 +132,7 @@ def Main():
     global guessGesture, visualize, mod, binaryMode, x0, y0, width, height, saveImg, gestname, path
     quietMode = False
 
-    font = cv2.FONT_HERSHEY_SIMPLEX
+    font = cv2.FONT_HERSHEY_DUPLEX
     size = 0.5
     fx = 10
     fy = 355
@@ -160,7 +140,10 @@ def Main():
 
     #Call CNN model loading callback
     while True:
-        ans = int(input( banner))
+        try:
+            ans = int(input( banner))
+        except:
+            print("Not an integer input")
         if ans == 2:
             mod = myNN.loadCNN(-1)
             myNN.trainModel(mod)
@@ -170,22 +153,8 @@ def Main():
             print("Will load default weight file")
             mod = myNN.loadCNN(0)
             break
-        elif ans == 3:
-            if not mod:
-                w = int(input("Which weight file to load (0 or 1)"))
-                mod = myNN.loadCNN(w)
-            else:
-                print("Will load default weight file")
-
-            img = int(input("Image number "))
-            layer = int(input("Enter which layer to visualize "))
-            myNN.visualizeLayers(mod, img, layer)
-            input("Press any key to continue")
-            continue
-
         else:
-            print("Get out of here!!!")
-            return 0
+            continue
 
     ## Grab camera input
     cap = cv2.VideoCapture(0)
@@ -240,11 +209,6 @@ def Main():
         elif key == ord('g'):
             guessGesture = not guessGesture
             print("Prediction Mode - {}".format(guessGesture))
-
-        ## This option is not yet complete. So disabled for now
-        ## Use v key to visualize layers
-        #elif key == ord('v'):
-        #    visualize = True
 
         ## Use i,j,k,l to adjust ROI window
         elif key == ord('i'):

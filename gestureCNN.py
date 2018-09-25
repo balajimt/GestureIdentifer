@@ -180,16 +180,11 @@ def guessGesture(model, img):
     prob  = d[guess]
 
     if prob > 70.0:
-        #print guess + "  Probability: ", prob
 
-        #Enable this to save the predictions in a json file,
-        #Which can be read by plotter app to plot bar graph
-        #dump to the JSON contents to the file
+        # with open('gesturejson.txt', 'w') as outfile:
+        #     json.dump(d, outfile)
 
-        with open('gesturejson.txt', 'w') as outfile:
-            json.dump(d, outfile)
-
-        print(d)
+        #print(d)
 
         return output.index(guess)
 
