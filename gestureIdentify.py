@@ -29,7 +29,7 @@ path = ""
 mod = 0
 
 # Per Gesture the number of images
-numOfSamples = 401
+numOfSamples = 1000
 
 
 # Saves an image with a particular gesture name
