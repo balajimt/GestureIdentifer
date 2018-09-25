@@ -1,5 +1,5 @@
 import cv2
-import pyautogui
+#import pyautogui
 import numpy as np
 import os
 import time
@@ -116,11 +116,11 @@ def binaryMask(frame, x0, y0, width, height ):
             # output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
             if lastgesture == 3:
                 print("Hide/View Controls")
-                pyautogui.hotkey('ctrl', 'h')
+                #pyautogui.hotkey('ctrl', 'h')
                 #time.sleep(0.25)
             elif lastgesture == 4:
                 print("Play/Pause")
-                pyautogui.press('space')
+                #pyautogui.press('space')
                 #time.sleep(0.25)
     return res
 
