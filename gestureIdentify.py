@@ -5,8 +5,14 @@ import os
 import time
 import gestureCNN as myNN
 
+font = cv2.FONT_HERSHEY_DUPLEX
+size = 0.5
+fx = 10
+fy = 355
+fh = 18
+
 # Coordinates of region of Interest
-x0 = 400
+x0 = 350
 y0 = 200
 
 # Height and width f region of Interest
@@ -57,8 +63,9 @@ def skinMask(frame, x0, y0, width, height ):
     # HSV values
     low_range = np.array([0, 50, 80])
     upper_range = np.array([30, 200, 255])
-
-    cv2.rectangle(frame, (x0,y0),(x0+width,y0+height),(0,255,0),1)
+    # rgb(80, 244, 66) Green
+    cv2.putText(frame,'Skin Mask',(x0,y0-20), font, size,(80,244,66),1,1)
+    cv2.rectangle(frame, (x0,y0),(x0+width,y0+height),(80,244,66),1)
     roi = frame[y0:y0+height, x0:x0+width]
 
     hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
@@ -93,8 +100,9 @@ def skinMask(frame, x0, y0, width, height ):
 #%%
 def binaryMask(frame, x0, y0, width, height ):
     global guessGesture, mod, lastgesture, saveImg
-
-    cv2.rectangle(frame, (x0,y0),(x0+width,y0+height),(0,255,0),1)
+    # Color orange
+    cv2.putText(frame,'Binary Threshold',(x0,y0-20), font, size,(80,244,66),1,1)
+    cv2.rectangle(frame, (x0,y0),(x0+width,y0+height),(80,244,66),1)
     roi = frame[y0:y0+height, x0:x0+width]
 
     gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
@@ -126,33 +134,27 @@ def binaryMask(frame, x0, y0, width, height ):
 
 
 banner =  '''\n
-    1- Use pretrained model for gesture recognition & layer visualization
-    2- Train the model (you will require image samples for training under .\newtest)
+    1- Gesture Recognition
+    2- Train the model
     '''
 
-
-def Main():
+def MainInterface():
     global guessGesture, visualize, mod, binaryMode, x0, y0, width, height, saveImg, gestname, path
     quietMode = False
-
-    font = cv2.FONT_HERSHEY_DUPLEX
-    size = 0.5
-    fx = 10
-    fy = 355
-    fh = 18
-
     #Call CNN model loading callback
     while True:
         try:
-            ans = int(input( banner))
+            img = cv2.imread('mainScreen.png',1)
         except:
             print("Not an integer input")
-        if ans == 2:
+        cv2.imshow('image',img)
+        ans = cv2.waitKey(10) & 0xff
+        if ans == ord('2'):
             mod = myNN.buildNetwork(-1)
             myNN.trainModel(mod)
             input("Press any key to continue")
             break
-        elif ans == 1:
+        elif ans == ord('1'):
             print("Will load default weight file")
             mod = myNN.buildNetwork(0)
             break
@@ -184,7 +186,6 @@ def Main():
         cv2.putText(frame,'b: Threshold     ESC: Freeze     p: Predict',(fx,fy + 5*fh), font, size,(0,255,0),1,1)
         cv2.putText(frame,'a: Folder        s: Capture      h: EXIT',(fx,fy + 6*fh), font, size,(0,255,0),1,1)
 
-        ## If enabled will stop updating the main openCV windows
         if not quietMode:
             cv2.imshow('Camera',frame)
             cv2.imshow('ROI', roi)
@@ -246,13 +247,8 @@ def Main():
                     print('Some issue while creating the directory named -' + gestname)
 
             path = "./"+gestname+"/"
-
-        #elif key != 255:
-        #    print key
-
-    #Realse & destroy
     cap.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    Main()
+    MainInterface()

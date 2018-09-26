@@ -167,12 +167,7 @@ def guessAction(model, img):
     prob  = d[guess]
 
     if prob > 90.0:
-
-        # with open('gesturejson.txt', 'w') as outfile:
-        #     json.dump(d, outfile)
-
         #print(d)
-
         return output.index(guess)
 
     else:
