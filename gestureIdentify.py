@@ -109,7 +109,7 @@ def binaryMask(frame, x0, y0, width, height ):
     if saveImg == True:
         saveROIImg(res)
     elif guessGesture == True:
-        retgesture = myNN.guessGesture(mod, res)
+        retgesture = myNN.guessAction(mod, res)
         if lastgesture != retgesture :
             lastgesture = retgesture
             # Trainded Gesture Files
@@ -148,13 +148,13 @@ def Main():
         except:
             print("Not an integer input")
         if ans == 2:
-            mod = myNN.loadCNN(-1)
+            mod = myNN.buildNetwork(-1)
             myNN.trainModel(mod)
             input("Press any key to continue")
             break
         elif ans == 1:
             print("Will load default weight file")
-            mod = myNN.loadCNN(0)
+            mod = myNN.buildNetwork(0)
             break
         else:
             continue

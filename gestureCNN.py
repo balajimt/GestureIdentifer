@@ -61,29 +61,15 @@ path2 = './newtest'
 path3 = 'balaji'
 
 # WeightFileName = ["ori_4015imgs_weights.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
-WeightFileName = ["newtestweight.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
+WeightFileName = ["newtestfile5000.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
 
 # outputs
 output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
 #output = ["PEACE", "STOP", "THUMBSDOWN", "THUMBSUP"]
 
 
-
 #%%
-# This function can be used for converting colored img to Grayscale img
-# while copying images from path1 to path2
-def convertToGrayImg(path1, path2):
-    listing = os.listdir(path1)
-    for file in listing:
-        if file.startswith('.'):
-            continue
-        img = Image.open(path1 +'/' + file)
-        #img = img.resize((img_rows,img_cols))
-        grayimg = img.convert('L')
-        grayimg.save(path2 + '/' +  file, "PNG")
-
-#%%
-def modlistdir(path):
+def returnDirectoryList(path):
     listing = os.listdir(path)
     retlist = []
     for name in listing:
@@ -95,7 +81,7 @@ def modlistdir(path):
 
 
 # Load CNN model
-def loadCNN(wf_index):
+def buildNetwork(wf_index):
     global get_output
     model = Sequential()
     # Convolution 2D layer addition
@@ -141,7 +127,7 @@ def loadCNN(wf_index):
     return model
 
 # This function does the guessing work based on input images
-def guessGesture(model, img):
+def guessAction(model, img):
     global output, get_output
     # Flatten it to single dimensional array
     # to reshape it later
@@ -193,9 +179,9 @@ def guessGesture(model, img):
         return 1
 
 # Splits up into test and train data
-def initializers():
+def initialiseImages():
     # Returns all files in a directory
-    imlist = modlistdir(path2)
+    imlist = returnDirectoryList(path2)
 
     # Open one image to get size
     image1 = np.array(Image.open(path2 +'/' + imlist[0]))
@@ -265,7 +251,7 @@ def initializers():
 
 def trainModel(model):
     # Split X and y into training and testing sets
-    X_train, X_test, Y_train, Y_test = initializers()
+    X_train, X_test, Y_train, Y_test = initialiseImages()
 
     # Now start the training of the loaded model
     hist = model.fit(X_train, Y_train, batch_size=batch_size, epochs=nb_epoch,
