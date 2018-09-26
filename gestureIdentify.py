@@ -1,5 +1,5 @@
 import cv2
-#import pyautogui
+import pyautogui
 import numpy as np
 import os
 import time
@@ -114,14 +114,14 @@ def binaryMask(frame, x0, y0, width, height ):
             lastgesture = retgesture
             # Trainded Gesture Files
             # output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
-            if lastgesture == 3:
-                print("Hide/View Controls")
-                #pyautogui.hotkey('ctrl', 'h')
-                #time.sleep(0.25)
-            elif lastgesture == 4:
+            # if lastgesture == 3:
+            #     print("Hide/View Controls")
+            #     pyautogui.hotkey('ctrl', 'h')
+            #     time.sleep(0.25)
+            if lastgesture == 1:
                 print("Play/Pause")
-                #pyautogui.press('space')
-                #time.sleep(0.25)
+                pyautogui.press('space')
+                time.sleep(0.25)
     return res
 
 
@@ -161,7 +161,7 @@ def Main():
 
     ## Grab camera input
     cap = cv2.VideoCapture(0)
-    cv2.namedWindow('Original', cv2.WINDOW_NORMAL)
+    cv2.namedWindow('Camera', cv2.WINDOW_NORMAL)
 
     # set rt size as 640x480
     ret = cap.set(3,640)
@@ -179,25 +179,21 @@ def Main():
             else:
                 roi = skinMask(frame, x0, y0, width, height)
 
-        cv2.putText(frame,'Options:',(fx,fy), font, 0.7,(0,255,0),2,1)
-        cv2.putText(frame,'b - Toggle Binary/SkinMask',(fx,fy + fh), font, size,(0,255,0),1,1)
-        cv2.putText(frame,'g - Toggle Prediction Mode',(fx,fy + 2*fh), font, size,(0,255,0),1,1)
-        cv2.putText(frame,'q - Toggle Quiet Mode',(fx,fy + 3*fh), font, size,(0,255,0),1,1)
-        cv2.putText(frame,'n - To enter name of new gesture folder',(fx,fy + 4*fh), font, size,(0,255,0),1,1)
-        cv2.putText(frame,'s - To start capturing new gestures for training',(fx,fy + 5*fh), font, size,(0,255,0),1,1)
-        cv2.putText(frame,'ESC - Exit',(fx,fy + 6*fh), font, size,(0,255,0),1,1)
+
+        cv2.putText(frame,'GesReg v1.0',(fx+520,fy+6*fh), font, size,(0,255,0),1,1)
+        cv2.putText(frame,'b: Threshold     ESC: Freeze     p: Predict',(fx,fy + 5*fh), font, size,(0,255,0),1,1)
+        cv2.putText(frame,'a: Folder        s: Capture      h: EXIT',(fx,fy + 6*fh), font, size,(0,255,0),1,1)
 
         ## If enabled will stop updating the main openCV windows
-        ## Way to reduce some processing power :)
         if not quietMode:
-            cv2.imshow('Original',frame)
+            cv2.imshow('Camera',frame)
             cv2.imshow('ROI', roi)
 
         # Keyboard inputs
         key = cv2.waitKey(10) & 0xff
 
         ## Use Esc key to close the program
-        if key == 27:
+        if key == ord('h'):
             break
 
         ## Use b key to toggle between binary threshold or skinmask based filters
@@ -209,7 +205,7 @@ def Main():
                 print("SkinMask filter active")
 
         ## Use g key to start gesture predictions via CNN
-        elif key == ord('g'):
+        elif key == ord('p'):
             guessGesture = not guessGesture
             print("Prediction Mode - {}".format(guessGesture))
 
@@ -224,7 +220,7 @@ def Main():
             x0 = x0 + 5
 
         ## Quiet mode to hide gesture window
-        elif key == ord('q'):
+        elif key == 27:
             quietMode = not quietMode
             print("Quiet Mode - {}".format(quietMode))
 
@@ -240,7 +236,7 @@ def Main():
                 saveImg = False
 
         ## Use n key to enter gesture name
-        elif key == ord('n'):
+        elif key == ord('a'):
             gestname = input("Enter the gesture folder name: ")
             try:
                 os.makedirs(gestname)

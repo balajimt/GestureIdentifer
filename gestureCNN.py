@@ -166,7 +166,7 @@ def guessAction(model, img):
     guess = max(iter(d.items()), key=operator.itemgetter(1))[0]
     prob  = d[guess]
 
-    if prob > 70.0:
+    if prob > 90.0:
 
         # with open('gesturejson.txt', 'w') as outfile:
         #     json.dump(d, outfile)
