@@ -1,48 +1,30 @@
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
-from keras.optimizers import SGD,RMSprop,adam
-from keras.utils import np_utils
 
-# We require this for Theano lib ONLY. Remove it for TensorFlow usage
+from keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
+from keras.utils import np_utils
+from keras.models import Sequential
+from keras.utils import plot_model
 from keras import backend as K
-K.set_image_dim_ordering('th')
 
 import numpy as np
-#import matplotlib.pyplot as plt
 import os
-import theano
 from PIL import Image
-# SKLEARN
+
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from keras.utils import plot_model
-import json
 
-import cv2
-import matplotlib
-#matplotlib.use("TkAgg")
-from matplotlib import pyplot as plt
-
-
-# input image dimensions
-img_rows, img_cols = 200, 200
-
-# number of channels
-# For grayscale use 1 value and for color images use 3 (R,G,B channels)
-img_channels = 1
-
+K.set_image_dim_ordering('th')
 
 # Batch_size to train
-batch_size = 32
+batch_size = 50
 
-## Number of output classes (change it accordingly)
-## eg: In my case I wanted to predict 4 types of gestures (Ok, Peace, Punch, Stop)
-## NOTE: If you change this then dont forget to change Labels accordingly
+
+
+# No of output classes
 nb_classes = 5
 
-# Number of epochs to train (change it accordingly)
-nb_epoch = 15  #25
+# No of epochs
+nb_epoch = 14
 
 # Total number of convolutional filters to use
 nb_filters = 32
@@ -51,21 +33,17 @@ nb_pool = 2
 # Size of convolution kernel
 nb_conv = 3
 
-#%%
 #  data
 path = "./"
 path1 = "./gestures"    #path of folder of images
 
 ## Path2 is the folder which is fed in to training model
 path2 = './newtest'
-path3 = 'balaji'
 
-# WeightFileName = ["ori_4015imgs_weights.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
-WeightFileName = ["newtestfile5000.hdf5","bw_4015imgs_weights.hdf5","bw_2510imgs_weights.hdf5","./bw_weight.hdf5","./final_c_weights.hdf5","./semiVgg_1_weights.hdf5","/new_wt_dropout20.hdf5","./weights-CNN-gesture_skinmask.hdf5"]
+WeightFileName = ["newtestfile5000.hdf5"]
 
-# outputs
+# Predicted Outputs
 output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
-#output = ["PEACE", "STOP", "THUMBSDOWN", "THUMBSUP"]
 
 
 #%%
@@ -79,6 +57,12 @@ def returnDirectoryList(path):
         retlist.append(name)
     return retlist
 
+
+# Input image dimensions
+img_rows = 200
+img_cols = 200
+# For grayscale use 1 value and for color images use 3 (R,G,B channels)
+img_channels = 1
 
 # Load CNN model
 def buildNetwork(wf_index):
@@ -103,9 +87,11 @@ def buildNetwork(wf_index):
     model.add(Dropout(0.5))
     # Output layer should have the layer corresponding to the class labels
     # For number classification it would have been 10
+    model.add(Dense(64))
+    model.add(Activation('softmax'))
+    model.add(Dropout(0.5))
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
-
     # Compilation based on a loss and entropy function
     model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
 
