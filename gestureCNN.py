@@ -88,7 +88,7 @@ def buildNetwork(wf_index):
     # Output layer should have the layer corresponding to the class labels
     # For number classification it would have been 10
     model.add(Dense(64))
-    model.add(Activation('softmax'))
+    model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
