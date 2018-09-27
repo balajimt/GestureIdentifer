@@ -2,7 +2,7 @@ import gestureCNN as cnn
 import gestureConfiguration as gc
 import gestureFilters as gf
 import cv2
-import pyautogui
+#import pyautogui
 import numpy as np
 import os
 import time
