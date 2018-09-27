@@ -127,7 +127,7 @@ def buildNetwork(wf_index):
     return model
 
 # This function does the guessing work based on input images
-def guessAction(model, img):
+def guessGesture(model, img):
     global output, get_output
     # Flatten it to single dimensional array
     # to reshape it later

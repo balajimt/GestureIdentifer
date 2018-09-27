@@ -117,7 +117,7 @@ def binaryMask(frame, x0, y0, width, height ):
     if saveImg == True:
         saveROIImg(res)
     elif guessGesture == True:
-        retgesture = myNN.guessAction(mod, res)
+        retgesture = myNN.guessGesture(mod, res)
         if lastgesture != retgesture :
             lastgesture = retgesture
             # Trainded Gesture Files
@@ -132,11 +132,6 @@ def binaryMask(frame, x0, y0, width, height ):
                 time.sleep(0.25)
     return res
 
-
-banner =  '''\n
-    1- Gesture Recognition
-    2- Train the model
-    '''
 
 def MainInterface():
     global guessGesture, visualize, mod, binaryMode, x0, y0, width, height, saveImg, gestname, path
