@@ -1,7 +1,7 @@
 import cv2
 #-----------------------------TEXT OPTIONS--------------------------------------
-font = cv2.FONT_HERSHEY_DUPLEX
-size = 0.5
+frameFont = cv2.FONT_HERSHEY_DUPLEX
+frameFontSize = 0.5
 textX = 10
 textY = 355
 textH = 18
@@ -19,6 +19,7 @@ widthROI = 200
 saveImageFile = False
 guessGesture = False
 lastGesture = -1
+quietMode = False
 
 # Which mask mode to use BinaryMask or SkinMask (True|False)
 binaryMode = True

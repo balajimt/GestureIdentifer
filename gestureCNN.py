@@ -248,15 +248,10 @@ def trainModel(model):
     # Split X and y into training and testing sets
     X_train, X_test, Y_train, Y_test = initialiseImages()
 
-    # Now start the training of the loaded model
     hist = model.fit(X_train, Y_train, batch_size=batch_size, epochs=nb_epoch,
                  verbose=1, validation_split=0.2)
 
-    # visualizeHis(hist)
-    ans = input("Do you want to save the trained weights - y/n ?")
-    if ans == 'y':
-        filename = input("Enter file name - ")
-        fname = path + str(filename) + ".hdf5"
-        model.save_weights(fname,overwrite=True)
-    else:
-        model.save_weights("newWeight.hdf5",overwrite=True)
+    ans = input("Saving trained weights")
+    filename = input("Enter file name")
+    fname = path + str(filename) + ".hdf5"
+    model.save_weights(fname,overwrite=True)
