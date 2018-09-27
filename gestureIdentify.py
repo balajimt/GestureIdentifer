@@ -9,24 +9,34 @@ import time
 
 def MainInterface():
     while True:
-        try:
-            img = cv2.imread('mainScreen.png',1)
-        except:
-            print("Welcome screen not found")
-        cv2.imshow('image',img)
-        keyPressed = cv2.waitKey(10) & 0xff
-        if keyPressed == ord('2'):
+        # try:
+        #     img = cv2.imread('mainScreen.png',1)
+        # except:
+        #     print("Welcome screen not found")
+        # cv2.imshow('image',img)
+        # keyPressed = cv2.waitKey(10) & 0xff
+        # if keyPressed == ord('2'):
+        #     gc.mod = cnn.buildNetwork(-1)
+        #     cnn.trainModel(gc.mod)
+        #     input("Press any key to continue")
+        #     break
+        # elif keyPressed == ord('1'):
+        #     print("Will load default weight file")
+        #     gc.mod = cnn.buildNetwork(0)
+        #     break
+        # else:
+        #     continue
+
+
+        keyPressed = int(input('1.Predict\n2.Train'))
+        if keyPressed == 2:
             gc.mod = cnn.buildNetwork(-1)
             cnn.trainModel(gc.mod)
             input("Press any key to continue")
             break
-        elif keyPressed == ord('1'):
+        elif keyPressed == 1:
             print("Will load default weight file")
             gc.mod = cnn.buildNetwork(0)
-            break
-        elif keyPressed == ord('3'):
-            continue
-        elif keyPressed == ord('4'):
             break
         else:
             continue
