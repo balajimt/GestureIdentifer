@@ -18,8 +18,6 @@ K.set_image_dim_ordering('th')
 # Batch_size to train
 batch_size = 50
 
-
-
 # No of output classes
 nb_classes = 5
 
