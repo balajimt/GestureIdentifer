@@ -37,7 +37,6 @@ def skinmaskFilter(frame):
         returnGesture = cnn.guessGesture(gc.mod, res)
         if gc.lastGesture != returnGesture :
             gc.lastGesture = returnGesture
-            print(cnn.output[gc.lastGesture])
             time.sleep(0.01 )
             #guessGesture = False
     return res
@@ -70,7 +69,7 @@ def thresholdFilter(frame):
             # Hi gesture to invoke space
             if gc.lastGesture == 1:
                 print("Play/Pause")
-                #pyautogui.press('space')
+                pyautogui.press('space')
                 time.sleep(0.25)
     return res
 

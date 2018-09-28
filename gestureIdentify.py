@@ -16,13 +16,13 @@ def MainInterface():
         cv2.imshow('image',img)
         keyPressed = cv2.waitKey(10) & 0xff
         if keyPressed == ord('2'):
-            gc.mod = cnn.buildNetwork(-1,2)
+            gc.mod = cnn.buildNetwork(-1,1)
             cnn.trainModel(gc.mod)
             input("Press any key to continue")
             break
         elif keyPressed == ord('1'):
             print("Will load default weight file")
-            gc.mod = cnn.buildNetwork(0,2)
+            gc.mod = cnn.buildNetwork(1,1)
             break
         elif keyPressed == ord('3'):
             continue

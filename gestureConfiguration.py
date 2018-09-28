@@ -20,12 +20,8 @@ saveImageFile = False
 guessGesture = False
 lastGesture = -1
 quietMode = False
-
-# Which mask mode to use BinaryMask or SkinMask (True|False)
 binaryMode = True
 counter = 0
-# This parameter controls number of image samples to be taken PER gesture
-
 gestureName = ""
 path = ""
 mod = 0
@@ -48,7 +44,7 @@ channels = 1
 #----------------------WEIGHT FILE PARAMETERS-------------------------------
 defaultPath = "./"
 trainFolder = './newtest'
-WeightFileName = ["newtestfile5000.hdf5"]
+WeightFileName = ["newtestfile5000.hdf5","newtestweight50002.hdf5"]
 output = ["Hi", "Stop","Spider", "Thumbsup", "Yo"]
 
 #---------------------------------------------------------------------------
