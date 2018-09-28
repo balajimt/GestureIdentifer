@@ -28,8 +28,7 @@ nb_epoch = 14
 nb_filters = 32
 # Max pooling
 nb_pool = 2
-# Size of convolution kernel
-nb_conv = 3
+
 
 #  data
 path = "./"
@@ -62,37 +61,55 @@ img_cols = 200
 # For grayscale use 1 value and for color images use 3 (R,G,B channels)
 img_channels = 1
 
+'''
+CNN Model Description
+https://towardsdatascience.com/a-simple-2d-cnn-for-mnist-digit-recognition-a998dbc1e79a
+http://cs231n.github.io/convolutional-networks/
+'''
 # Load CNN model
-def buildNetwork(wf_index):
+model = Sequential()
+def buildNetwork(wf_index,index):
     global get_output
-    model = Sequential()
     # Convolution 2D layer addition
     # (no_of filters, rows in covolution kernel, columns in convolution kernel)
-    model.add(Conv2D(nb_filters, (nb_conv, nb_conv),
-                        padding='valid',
+    if(index==1):
+        # 15 layer Model
+        model.add(Conv2D(32, (3,3),activation='relu',input_shape=(img_channels, img_rows, img_cols)))
+        model.add(Activation('relu'))
+        model.add(Conv2D(32, (3, 3)))
+        model.add(Activation('relu'))
+        # MaxPooling2D is a way to reduce the number of parameters in our model
+        # by sliding a 2x2 pooling filter across the previous layer and taking
+        # the max of the 4 values in the 2x2 filter.
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.5))
+        model.add(Flatten())
+        model.add(Dense(128))
+        model.add(Activation('relu'))
+        model.add(Dropout(0.5))
+        # Output layer should have the layer corresponding to the class labels
+        # For number classification it would have been 10
+        model.add(Dense(64))
+        model.add(Activation('relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(nb_classes))
+        model.add(Activation('softmax'))
+    elif(index==2):
+        model.add(Conv2D(32, (3, 3),padding='valid',
                         input_shape=(img_channels, img_rows, img_cols)))
-    model.add(Activation('relu'))
-    model.add(Conv2D(nb_filters, (nb_conv, nb_conv)))
-    model.add(Activation('relu'))
-    # MaxPooling2D is a way to reduce the number of parameters in our model
-    # by sliding a 2x2 pooling filter across the previous layer and taking
-    # the max of the 4 values in the 2x2 filter.
-    model.add(MaxPooling2D(pool_size=(nb_pool, nb_pool)))
-    model.add(Dropout(0.5))
-    model.add(Flatten())
-    model.add(Dense(128))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    # Output layer should have the layer corresponding to the class labels
-    # For number classification it would have been 10
-    model.add(Dense(64))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(nb_classes))
-    model.add(Activation('softmax'))
+        model.add(Activation('relu'))
+        model.add(Conv2D(32, (3, 3)))
+        model.add(Activation('relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.5))
+        model.add(Flatten())
+        model.add(Dense(128))
+        model.add(Activation('relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(nb_classes))
+        model.add(Activation('softmax'))
     # Compilation based on a loss and entropy function
     model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
-
     # Model summary
     print("Model Summary")
     model.summary()
