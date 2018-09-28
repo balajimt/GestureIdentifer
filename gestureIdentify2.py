@@ -1,5 +1,5 @@
 # VM Specific Interface
-import gestureCNN as cnn
+import gestureNetwork as cnn
 import gestureConfiguration as gc
 
 def MainInterface():

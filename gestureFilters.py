@@ -1,5 +1,5 @@
 import gestureConfiguration as gc
-import gestureCNN as cnn
+import gestureNetwork as cnn
 import numpy as np
 import cv2
 import pyautogui

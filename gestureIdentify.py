@@ -1,4 +1,4 @@
-import gestureCNN as cnn
+import gestureNetwork as cnn
 import gestureConfiguration as gc
 import gestureFilters as gf
 import cv2
