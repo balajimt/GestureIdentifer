@@ -1,8 +1,7 @@
 import gestureConfiguration as gc
 from keras.layers import Activation, Dense, Dropout, Flatten, Conv2D, MaxPooling2D
-from keras.utils import np_utils
+from keras.utils import np_utils,plot_model
 from keras.models import Sequential
-from keras.utils import plot_model
 from keras import backend as K
 K.set_image_dim_ordering('th')
 import numpy as np
