@@ -30,13 +30,13 @@ def MainInterface():
 
         keyPressed = int(input('1.Predict\n2.Train'))
         if keyPressed == 2:
-            gc.mod = cnn.buildNetwork(-1)
+            gc.mod = cnn.buildNetwork(-1,2)
             cnn.trainModel(gc.mod)
             input("Press any key to continue")
             break
         elif keyPressed == 1:
             print("Will load default weight file")
-            gc.mod = cnn.buildNetwork(0)
+            gc.mod = cnn.buildNetwork(0,2)
             break
         else:
             continue
