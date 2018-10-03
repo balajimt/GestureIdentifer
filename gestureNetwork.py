@@ -30,7 +30,7 @@ def returnDirectoryList(path):
 
 # Load CNN model
 model = Sequential()
-def buildNetwork(wf_index,index):
+def buildNetwork(weightFileIndex,index):
     global get_output
     # Convolution 2D layer addition
     # (no_of filters, rows in covolution kernel, columns in convolution kernel)
@@ -79,9 +79,9 @@ def buildNetwork(wf_index,index):
     model.get_config()
     plot_model(model, to_file='new_model.png', show_shapes = True)
 
-    if wf_index >= 0:
+    if weightFileIndex >= 0:
         #Load pretrained weights
-        fname = gc.WeightFileName[int(wf_index)]
+        fname = gc.WeightFileName[int(weightFileIndex)]
         print("loading ", fname)
         model.load_weights(fname)
 
@@ -137,7 +137,7 @@ def guessGesture(model, img):
         return 1
 
 # Splits up into test and train data
-def initialiseImages():
+def ImageLoader():
     # Returns all files in a directory
     imlist = returnDirectoryList(gc.trainFolder)
 
@@ -200,7 +200,7 @@ def initialiseImages():
 
 def trainModel(model):
     # Split X and y into training and testing sets
-    X_train, X_test, Y_train, Y_test = initialiseImages()
+    X_train, X_test, Y_train, Y_test = ImageLoader()
 
     hist = model.fit(X_train, Y_train, batch_size=gc.batchSize, epochs=gc.epochs,
                  verbose=1, validation_split=0.2)

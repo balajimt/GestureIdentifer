@@ -19,9 +19,7 @@ def skinmaskFilter(frame):
     #Apply skin color range
     mask = cv2.inRange(hsv, low_range, upper_range)
     skinkernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-    mask = cv2.erode(mask, skinkernel, iterations = 1)
-    mask = cv2.dilate(mask, skinkernel, iterations = 1)
-
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, skinkernel)
     #blur
     mask = cv2.GaussianBlur(mask, (15,15), 1)
     #cv2.imshow("Blur", mask)

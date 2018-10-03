@@ -13,7 +13,7 @@ def MainInterface():
             img = cv2.imread('mainScreen.png',1)
         except:
             print("Welcome screen not found")
-        cv2.imshow('image',img)
+        cv2.imshow('Welcome',img)
         keyPressed = cv2.waitKey(10) & 0xff
         if keyPressed == ord('2'):
             gc.mod = cnn.buildNetwork(-1,1)
